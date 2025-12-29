@@ -6,13 +6,14 @@ export interface ParsedArticle {
   content: string
   excerpt: string
   siteName?: string
+  ogImage?: string
 }
 
 export async function parseArticle(url: string): Promise<ParsedArticle> {
   // URLからHTMLを取得
   const response = await fetch(url, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (compatible; ReadLater/1.0)',
+      'User-Agent': 'Mozilla/5.0 (compatible; MyPocket/1.0)',
       'Accept': 'text/html,application/xhtml+xml',
     },
   })
@@ -26,6 +27,20 @@ export async function parseArticle(url: string): Promise<ParsedArticle> {
   // JSDOMでパース
   const dom = new JSDOM(html, { url })
   const document = dom.window.document
+
+  // OG画像を取得
+  const ogImageMeta = document.querySelector('meta[property="og:image"]')
+  const twitterImageMeta = document.querySelector('meta[name="twitter:image"]')
+  let ogImage = ogImageMeta?.getAttribute('content') || twitterImageMeta?.getAttribute('content') || undefined
+
+  // 相対URLを絶対URLに変換
+  if (ogImage && !ogImage.startsWith('http')) {
+    try {
+      ogImage = new URL(ogImage, url).href
+    } catch {
+      ogImage = undefined
+    }
+  }
 
   // Readabilityで本文抽出
   const reader = new Readability(document)
@@ -44,5 +59,6 @@ export async function parseArticle(url: string): Promise<ParsedArticle> {
     content: article.content || '',
     excerpt,
     siteName: article.siteName || undefined,
+    ogImage,
   }
 }

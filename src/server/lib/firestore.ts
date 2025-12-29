@@ -36,6 +36,7 @@ export interface Article {
   content: string        // 抽出した本文
   excerpt: string        // 要約（最初の200文字程度）
   siteName?: string
+  ogImage?: string       // OG画像URL
   tags: string[]
   memo: string
   isRead: boolean

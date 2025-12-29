@@ -18,7 +18,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [password, setPassword] = useState<string>(() =>
-    localStorage.getItem('readlater_password') || ''
+    localStorage.getItem('mypocket_password') || ''
   )
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
@@ -135,7 +135,7 @@ export default function App() {
 
   const handleLogin = (pwd: string) => {
     setPassword(pwd)
-    localStorage.setItem('readlater_password', pwd)
+    localStorage.setItem('mypocket_password', pwd)
   }
 
   if (!isAuthenticated && !isLoading) {
@@ -144,16 +144,16 @@ export default function App() {
 
   return (
     <div className="min-h-screen">
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold text-gray-900">ReadLater</h1>
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-gray-900">MyPocket</h1>
+          <span className="text-sm text-gray-500">{articles.length} 件</span>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* 左サイドバー: 記事追加 & フィルター */}
-          <div className="space-y-4">
+      <main className="max-w-6xl mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-4 space-y-4">
             <ArticleForm onSubmit={addArticle} existingTags={tags} />
             <SearchBar value={searchQuery} onChange={setSearchQuery} />
             <TagFilter
@@ -163,16 +163,15 @@ export default function App() {
             />
           </div>
 
-          {/* メイン: 記事一覧 */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-8">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+              <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg mb-4 text-sm">
                 {error}
               </div>
             )}
 
             {isLoading ? (
-              <div className="text-center py-8 text-gray-500">読み込み中...</div>
+              <div className="text-center py-12 text-gray-500">読み込み中...</div>
             ) : (
               <ArticleList
                 articles={articles}
@@ -184,7 +183,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* 記事詳細モーダル */}
         {selectedArticle && (
           <ArticleDetail
             article={selectedArticle}

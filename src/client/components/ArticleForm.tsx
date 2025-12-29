@@ -18,10 +18,7 @@ export function ArticleForm({ onSubmit, existingTags }: Props) {
 
     setIsLoading(true)
     try {
-      const tags = tagInput
-        .split(',')
-        .map((t) => t.trim())
-        .filter(Boolean)
+      const tags = tagInput.split(',').map((t) => t.trim()).filter(Boolean)
       await onSubmit(url.trim(), tags, memo.trim())
       setUrl('')
       setTagInput('')
@@ -33,16 +30,15 @@ export function ArticleForm({ onSubmit, existingTags }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm border p-4">
+    <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-4">
       <h2 className="font-medium text-gray-900 mb-3">記事を追加</h2>
-
       <div className="space-y-3">
         <input
           type="url"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          placeholder="URLを入力..."
-          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="URLを入力"
+          className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 text-sm"
           required
         />
 
@@ -50,7 +46,7 @@ export function ArticleForm({ onSubmit, existingTags }: Props) {
           <button
             type="button"
             onClick={() => setIsExpanded(true)}
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm text-blue-600"
           >
             + タグ・メモを追加
           </button>
@@ -64,11 +60,11 @@ export function ArticleForm({ onSubmit, existingTags }: Props) {
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 placeholder="タグ（カンマ区切り）"
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 text-sm"
               />
               {existingTags.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-2">
-                  {existingTags.slice(0, 10).map((tag) => (
+                  {existingTags.slice(0, 8).map((tag) => (
                     <button
                       key={tag}
                       type="button"
@@ -86,13 +82,12 @@ export function ArticleForm({ onSubmit, existingTags }: Props) {
                 </div>
               )}
             </div>
-
             <textarea
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
-              placeholder="メモ..."
+              placeholder="メモ"
               rows={2}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 text-sm resize-none"
             />
           </>
         )}
@@ -100,7 +95,7 @@ export function ArticleForm({ onSubmit, existingTags }: Props) {
         <button
           type="submit"
           disabled={isLoading || !url.trim()}
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-gray-900 text-white py-2 rounded-lg text-sm font-medium hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? '保存中...' : '保存'}
         </button>

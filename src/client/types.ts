@@ -5,6 +5,7 @@ export interface Article {
   content: string
   excerpt: string
   siteName?: string
+  ogImage?: string
   tags: string[]
   memo: string
   isRead: boolean

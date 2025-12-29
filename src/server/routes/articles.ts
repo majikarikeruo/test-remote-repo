@@ -72,10 +72,11 @@ articlesRouter.post('/', async (c) => {
 
     const article: Omit<Article, 'id'> = {
       url: body.url,
-      title: parsed.title,
-      content: parsed.content,
-      excerpt: parsed.excerpt,
-      siteName: parsed.siteName,
+      title: parsed.title || 'Untitled',
+      content: parsed.content || '',
+      excerpt: parsed.excerpt || '',
+      siteName: parsed.siteName || '',
+      ogImage: parsed.ogImage || '',
       tags: body.tags || [],
       memo: body.memo || '',
       isRead: false,
